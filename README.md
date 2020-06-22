@@ -2,10 +2,11 @@
 
 Sublime Text formatting extension for [dprint](https://dprint.dev)—a pluggable and configurable formatting platform.
 
-## Install
+## Setup
 
 1. Install [dprint's CLI](https://dprint.dev/install).
 2. Install Sublime Text plugin via [Package Control](https://packagecontrol.io/packages/dprint)
+3. Run `dprint init` in the root directory of your repository to create a `dprint.config.json` file.
 
 ## Features
 
