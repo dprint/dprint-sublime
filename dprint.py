@@ -28,8 +28,6 @@ class DprintFmtCommand(sublime_plugin.TextCommand):
 				file_text = self.view.substr(file_region)
 				formatted_text = dprint_exec.format_text(dir_path, file_path, file_text)
 
-				print(formatted_text)
-
 				if file_text != formatted_text:
 					self.view.replace(edit, file_region, formatted_text)
 					print("dprint: Formatted " + file_path)
@@ -63,14 +61,7 @@ class DprintExec:
 		stdout, stderr = p.communicate(bytes(file_text, "utf8"))
 
 		if p.returncode == 0:
-			result = stdout.decode("utf8")
-
-			if result.endswith("\r\n"):
-				return result[0:-2]
-			elif result.endswith("\n"):
-				return result[0:-1]
-			else:
-				return result
+			return stdout.decode("utf8")
 		else:
 			raise Exception("Error formatting: " + stderr.decode("utf8"))
 
