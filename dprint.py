@@ -14,23 +14,24 @@ class DprintFmtCommand(sublime_plugin.TextCommand):
 	def run(self, edit):
 		try:
 			file_path = self.view.file_name()
-			extension = os.path.splitext(file_path)[1].replace(".", "")
-			dir_path = os.path.dirname(file_path)
-			if dir_path in cached_dir_results:
-				extensions = cached_dir_results[dir_path]
-			else:
-				plugin_infos = dprint_exec.get_plugin_infos(dir_path)
-				extensions = [file_ext for plugin_info in plugin_infos for file_ext in plugin_info["fileExtensions"]]
-				cached_dir_results[dir_path] = extensions
+			if file_path is not None:
+				extension = os.path.splitext(file_path)[1].replace(".", "")
+				dir_path = os.path.dirname(file_path)
+				if dir_path in cached_dir_results:
+					extensions = cached_dir_results[dir_path]
+				else:
+					plugin_infos = dprint_exec.get_plugin_infos(dir_path)
+					extensions = [file_ext for plugin_info in plugin_infos for file_ext in plugin_info["fileExtensions"]]
+					cached_dir_results[dir_path] = extensions
 
-			if extension in extensions:
-				file_region = sublime.Region(0, self.view.size())
-				file_text = self.view.substr(file_region)
-				formatted_text = dprint_exec.format_text(dir_path, file_path, file_text)
+				if extension in extensions:
+					file_region = sublime.Region(0, self.view.size())
+					file_text = self.view.substr(file_region)
+					formatted_text = dprint_exec.format_text(dir_path, file_path, file_text)
 
-				if file_text != formatted_text:
-					self.view.replace(edit, file_region, formatted_text)
-					print("dprint: Formatted " + file_path)
+					if file_text != formatted_text:
+						self.view.replace(edit, file_region, formatted_text)
+						print("dprint: Formatted " + file_path)
 
 		except Exception as err:
 			print("dprint: " + str(err))
