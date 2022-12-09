@@ -42,7 +42,7 @@ class EventListener(sublime_plugin.EventListener):
 
 class DprintExec:
 	def get_plugin_infos(self, dir_path):
-		expected_schema_version = 4
+		expected_schema_version = 5
 		json_text = subprocess.check_output(["dprint", "editor-info"], cwd=dir_path).decode("utf8")
 		editor_info = json.loads(json_text)
 
@@ -67,4 +67,3 @@ class DprintExec:
 			raise Exception("Error formatting: " + stderr.decode("utf8"))
 
 dprint_exec = DprintExec()
-
